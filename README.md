@@ -1,5 +1,7 @@
 # Express + react front-end - exemple
 
+_used with login-react-express_
+
 ## login (express)
 
 1. installer les dependencies
@@ -12,21 +14,21 @@
 1. créer un component `Dashboard`
 
 ```javascript
-import React from "react"
+import React from "react";
 
 const Dashboard = ({ user }) => {
-  return <p>Welcome, {user} 🎉</p>
-}
+  return <p>Welcome, {user} 🎉</p>;
+};
 
-export default Dashboard
+export default Dashboard;
 ```
 
 3. modifier `src/App.js`
 
 ```javascript
-import React from "react"
-import LoginForm from "./components/LoginForm.js"
-import Dashboard from "./components/Dashboard.js"
+import React from "react";
+import LoginForm from "./components/LoginForm.js";
+import Dashboard from "./components/Dashboard.js";
 
 function App() {
   return (
@@ -38,22 +40,22 @@ function App() {
         Log out
       </button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 4. Tous les components ne devraient pas être rendus sur la page en même temps, nous devons aussi passer `username` dans le component `Dashboard`
 
 ```javascript
-import React, { useState } from "react"
-import LoginForm from "./components/LoginForm.js"
-import Dashboard from "./components/Dashboard.js"
+import React, { useState } from "react";
+import LoginForm from "./components/LoginForm.js";
+import Dashboard from "./components/Dashboard.js";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [username, setUsername] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   return (
     <div className="container my-4">
       <h1 className="display-3 text-center mb-4">Authentification</h1>
@@ -69,18 +71,18 @@ function App() {
         </>
       )}
     </div>
-  )
+  );
 }
 ```
 
 5. Dans `src/components/LoginForm.js`
 
 ```javascript
-import React from "react"
+import React from "react";
 
 const LoginForm = () => {
   const handleFormSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     fetch("http://192.168.1.70:7777/login", {
       method: "POST",
       headers: {
@@ -92,17 +94,17 @@ const LoginForm = () => {
       }),
     })
       .then((response) => {
-        console.log(response)
-        return response.json()
+        console.log(response);
+        return response.json();
       })
-      .catch((error) => console.error(error))
-  }
+      .catch((error) => console.error(error));
+  };
   return (
     <form onSubmit={handleFormSubmit} className="mt-4">
       {/* ... */}
     </form>
-  )
-}
+  );
+};
 ```
 
 ## login (express)
@@ -114,10 +116,10 @@ Nous devons ajouter middleware:
 ```javascript
 // login/src/app.js
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Content-Type")
-  next()
-})
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 ```
 
 2. Nous allons remplacer `res.send(string)` par `res.send(object)` (`res.json(object)` fonctionne aussi)
@@ -125,9 +127,9 @@ app.use(function (req, res, next) {
 ```javascript
 // src/app.js
 // avant (x2) res.send('Username or password invalid')
-res.send({ valid: false })
+res.send({ valid: false });
 // avant res.send(`Welcome to your dashboard ${username}`)
-res.send({ valid: true, username })
+res.send({ valid: true, username });
 ```
 
 ## login-react (react-app)
@@ -138,10 +140,10 @@ res.send({ valid: true, username })
 //
 
 const handleFormSubmit = (e) => {
-  e.preventDefault()
-  const username = e.target.elements.username.value
-  const password = e.target.elements.password.value
-  e.target.reset()
+  e.preventDefault();
+  const username = e.target.elements.username.value;
+  const password = e.target.elements.password.value;
+  e.target.reset();
   fetch("http://192.168.1.70:7777/login", {
     method: "POST",
     headers: {
@@ -153,35 +155,35 @@ const handleFormSubmit = (e) => {
     }),
   })
     .then((response) => {
-      console.log(response)
-      return response.json()
+      console.log(response);
+      return response.json();
     })
     .then((data) => {
       if (data.valid) {
-        setLoggedIn(true)
-        setUsername(data.username)
+        setLoggedIn(true);
+        setUsername(data.username);
       } else {
-        alert("Your credentials are not valid, try again ;)")
+        alert("Your credentials are not valid, try again ;)");
       }
     })
-    .catch((error) => console.error(error))
-}
+    .catch((error) => console.error(error));
+};
 ```
 
-2. Finallemend dans `src/App.js` nous allons ajouter handler pour le bouton
+2. Finalement dans `src/App.js` nous allons ajouter handler pour le bouton
 
 ```javascript
-import React, { useState } from "react"
-import LoginForm from "./components/LoginForm.js"
-import Dashboard from "./components/Dashboard"
+import React, { useState } from "react";
+import LoginForm from "./components/LoginForm.js";
+import Dashboard from "./components/Dashboard";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [username, setUsername] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   const handleLogoutClick = () => {
-    setUsername("")
-    setLoggedIn(false)
-  }
+    setUsername("");
+    setLoggedIn(false);
+  };
   return (
     <div className="container my-4">
       <h1 className="display-3 text-center mb-4">Authentification</h1>
@@ -195,10 +197,10 @@ function App() {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
